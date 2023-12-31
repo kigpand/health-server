@@ -24,7 +24,7 @@ mongoose
 // mongoose set
 const { Schema } = mongoose;
 
-const WritingSchema = new Schema({
+const RoutineSchema = new Schema({
   id: Number,
   title: String,
   category: String,
@@ -36,31 +36,30 @@ const WritingSchema = new Schema({
     },
   ],
 });
-const Writing = mongoose.model("Writing", WritingSchema);
+const Routine = mongoose.model("Routine", RoutineSchema);
 
 app.get("/", async (req, res) => {
-  let writing = await Writing.find({});
-  console.log(writing);
-  res.send(writing[writing.length - 1]);
+  let routine = await Routine.find({});
+  res.send(routine);
 });
 
 app.post("/addRoutine", async (req, res) => {
   const { id, title, category, routine } = req.body;
-  const writing = new Writing({
+  const addRoutine = new Routine({
     id,
     title,
     category,
     routine: [...routine],
   });
-  const result = await writing
+  const result = await addRoutine
     .save()
     .then(() => {
       console.log("Success");
-      res.render("success");
+      res.send("success");
     })
     .catch((err) => {
       console.error(err);
-      res.render("fail");
+      res.send("fail");
     });
 });
 
