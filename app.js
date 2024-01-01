@@ -43,6 +43,17 @@ app.get("/", async (req, res) => {
   res.send(routine);
 });
 
+app.get("/:id", async (req, res) => {
+  const id = req.params.id;
+  try {
+    const detail = await Routine.findOne({ id });
+    res.send(detail);
+  } catch (e) {
+    console.error(e);
+    res.send("fail");
+  }
+});
+
 app.post("/addRoutine", async (req, res) => {
   const { id, title, category, routine } = req.body;
   const addRoutine = new Routine({
@@ -61,6 +72,16 @@ app.post("/addRoutine", async (req, res) => {
       console.error(err);
       res.send("fail");
     });
+});
+
+app.delete("/delete", async (req, res) => {
+  const { id } = req.body;
+  try {
+    await Routine.deleteOne({ id });
+    res.send("success");
+  } catch (e) {
+    res.send("fail");
+  }
 });
 
 app.listen(3010, () => {
