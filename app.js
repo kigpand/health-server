@@ -3,6 +3,7 @@ import path from "path";
 import mongoose from "mongoose";
 import cors from "cors";
 import bodyParser from "body-parser";
+import routineRouter from "./routes/routineRouter.js";
 
 const __dirname = path.resolve();
 
@@ -21,68 +22,8 @@ mongoose
   .then(() => console.log("DB 연결 성공"))
   .catch((e) => console.log(e));
 
-// mongoose set
-const { Schema } = mongoose;
-
-const RoutineSchema = new Schema({
-  id: Number,
-  title: String,
-  category: String,
-  routine: [
-    {
-      kg: Number,
-      set: Number,
-      title: String,
-    },
-  ],
-});
-const Routine = mongoose.model("Routine", RoutineSchema);
-
-app.get("/", async (req, res) => {
-  let routine = await Routine.find({});
-  res.send(routine);
-});
-
-app.get("/:id", async (req, res) => {
-  const id = req.params.id;
-  try {
-    const detail = await Routine.findOne({ id });
-    res.send(detail);
-  } catch (e) {
-    console.error(e);
-    res.send("fail");
-  }
-});
-
-app.post("/addRoutine", async (req, res) => {
-  const { id, title, category, routine } = req.body;
-  const addRoutine = new Routine({
-    id,
-    title,
-    category,
-    routine: [...routine],
-  });
-  const result = await addRoutine
-    .save()
-    .then(() => {
-      console.log("Success");
-      res.send("success");
-    })
-    .catch((err) => {
-      console.error(err);
-      res.send("fail");
-    });
-});
-
-app.delete("/delete", async (req, res) => {
-  const { id } = req.body;
-  try {
-    await Routine.deleteOne({ id });
-    res.send("success");
-  } catch (e) {
-    res.send("fail");
-  }
-});
+// app router
+app.use("/routine", routineRouter);
 
 app.listen(3010, () => {
   console.log("Server is running");
