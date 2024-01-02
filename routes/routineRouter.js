@@ -4,20 +4,19 @@ import RoutineSchema from "../schema/routineSchema.js";
 const routineRouter = express.Router();
 
 routineRouter.use((req, res, next) => {
-  console.log("middleware for posts!");
   next();
 });
 
 routineRouter.get("/", async (req, res) => {
-  let routine = await RoutineSchema.find({});
+  const routine = await RoutineSchema.find({});
   res.send(routine);
 });
 
 routineRouter.get("/:id", async (req, res) => {
   const id = req.params.id;
   try {
-    const detail = await RoutineSchema.findOne({ id });
-    res.send(detail);
+    const routine = await RoutineSchema.findOne({ id });
+    res.send(routine);
   } catch (e) {
     console.error(e);
     res.send("fail");
