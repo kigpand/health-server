@@ -15,8 +15,8 @@ categoryRouter.get("/", async (req, res) => {
 categoryRouter.get("/:category", async (req, res) => {
   const { category } = req.params;
   try {
-    const categoryRes = await RoutineSchema.findOne({ category });
-    res.send(categoryRes);
+    const categoryRes = await CategorySchema.findOne({ category });
+    res.send(categoryRes || { category: "empty" });
   } catch (e) {
     console.error(e);
     res.send("fail");
