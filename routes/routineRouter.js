@@ -43,6 +43,16 @@ routineRouter.post("/addRoutine", async (req, res) => {
     });
 });
 
+routineRouter.put("/updateRoutine", async (req, res) => {
+  const { id, title, category, routine } = req.body;
+  try {
+    await RoutineSchema.updateOne({ id: id }, { title, category, routine });
+    res.send("success");
+  } catch (e) {
+    res.send("fail");
+  }
+});
+
 routineRouter.delete("/delete", async (req, res) => {
   const { id } = req.body;
   try {
