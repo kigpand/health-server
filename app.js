@@ -5,6 +5,7 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import routineRouter from "./routes/routineRouter.js";
 import categoryRouter from "./routes/categoryRouter.js";
+import recordRouter from "./routes/recordRouter.js";
 
 const __dirname = path.resolve();
 
@@ -26,6 +27,7 @@ mongoose
 // app router
 app.use("/routine", routineRouter);
 app.use("/category", categoryRouter);
+app.use("/record", recordRouter);
 
 app.listen(3010, () => {
   console.log("Server is running");
