@@ -63,4 +63,14 @@ routineRouter.delete("/delete", async (req, res) => {
   }
 });
 
+routineRouter.delete("/deleteRoutineByCategory", async (req, res) => {
+  const { category } = req.body;
+  try {
+    await RoutineSchema.deleteMany({ category });
+    res.send("success");
+  } catch (e) {
+    res.send("fail");
+  }
+});
+
 export default routineRouter;
