@@ -25,10 +25,12 @@ routineRouter.get("/:id", async (req, res) => {
 
 routineRouter.post("/addRoutine", async (req, res) => {
   const { id, title, category, routine } = req.body;
+  const date = new Date();
   const addRoutine = new RoutineSchema({
     id,
     title,
     category,
+    date,
     routine: [...routine],
   });
   const result = await addRoutine

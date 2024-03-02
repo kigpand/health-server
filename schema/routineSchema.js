@@ -6,6 +6,7 @@ const Routine = new Schema({
   id: Number,
   title: String,
   category: String,
+  date: Date,
   routine: [
     {
       kg: Number,
