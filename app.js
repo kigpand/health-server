@@ -12,7 +12,12 @@ const __dirname = path.resolve();
 const app = express();
 
 // CORS 설정 - 모두 개방
-app.use(cors());
+app.use(
+  cors({
+    origin: ["http://localhost:5173", "https://clonestargram.vercel.app"],
+    credentials: true,
+  })
+);
 
 // body parser
 app.use(bodyParser.urlencoded({ extended: true }));
