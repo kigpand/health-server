@@ -23,6 +23,16 @@ routineRouter.get("/:id", async (req, res) => {
   }
 });
 
+routineRouter.get("/count/:count", async (req, res) => {
+  const count = req.params.count;
+  try {
+    const routine = await RoutineSchema.find({}).limit(count);
+    res.send(routine);
+  } catch (e) {
+    res.send("fail");
+  }
+});
+
 routineRouter.post("/addRoutine", async (req, res) => {
   const { id, title, category, routine } = req.body;
   const date = new Date();
