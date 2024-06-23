@@ -23,6 +23,17 @@ routineRouter.get("/:id", async (req, res) => {
   }
 });
 
+routineRouter.get("/category/:category", async (req, res) => {
+  const category = req.params.category;
+  try {
+    const routine = await RoutineSchema.find({ category });
+    res.send(routine);
+  } catch (e) {
+    console.error(e);
+    res.send("fail");
+  }
+});
+
 routineRouter.get("/count/:count", async (req, res) => {
   const count = req.params.count;
   try {
@@ -77,6 +88,7 @@ routineRouter.delete("/delete", async (req, res) => {
 
 routineRouter.delete("/deleteRoutineByCategory", async (req, res) => {
   const { category } = req.body;
+  console.log(category);
   try {
     await RoutineSchema.deleteMany({ category });
     res.send("success");

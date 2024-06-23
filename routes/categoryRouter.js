@@ -43,7 +43,7 @@ categoryRouter.post("/addCategory", async (req, res) => {
 categoryRouter.delete("/deleteCategory", async (req, res) => {
   const { category } = req.body;
   try {
-    await CategorySchema.deleteOne({ category });
+    await CategorySchema.deleteOne({ _id: category });
     res.send("success");
   } catch (e) {
     res.send("fail");
