@@ -13,10 +13,10 @@ recordRouter.get("/", async (req, res) => {
 });
 
 recordRouter.post("/addRecord", async (req, res) => {
-  const { title, date, category } = req.body;
+  const { title, id, category } = req.body;
   const addRecord = new RecordSchema({
     title,
-    date,
+    id,
     category,
   });
   const result = await addRecord
