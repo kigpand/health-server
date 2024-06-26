@@ -12,6 +12,16 @@ recordRouter.get("/", async (req, res) => {
   res.send(routine);
 });
 
+recordRouter.get("/count/:count", async (req, res) => {
+  const count = req.params.count;
+  try {
+    const routine = await RecordSchema.find({}).limit(count);
+    res.send(routine);
+  } catch (e) {
+    res.send("fail");
+  }
+});
+
 recordRouter.post("/addRecord", async (req, res) => {
   const { title, id, category } = req.body;
   const addRecord = new RecordSchema({
