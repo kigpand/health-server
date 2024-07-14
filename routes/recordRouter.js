@@ -15,7 +15,7 @@ recordRouter.get("/", async (req, res) => {
 recordRouter.get("/count/:count", async (req, res) => {
   const count = req.params.count;
   try {
-    const routine = await RecordSchema.find({}).limit(count);
+    const routine = await RecordSchema.find({}).sort({ _id: -1 }).limit(count);
     res.send(routine);
   } catch (e) {
     res.send("fail");
