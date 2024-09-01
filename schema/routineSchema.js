@@ -12,6 +12,7 @@ const Routine = new Schema({
       kg: Number,
       set: Number,
       title: String,
+      link: String,
     },
   ],
 });
