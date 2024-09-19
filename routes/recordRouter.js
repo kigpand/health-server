@@ -24,21 +24,31 @@ recordRouter.get("/count/:count", async (req, res) => {
 
 recordRouter.post("/addRecord", async (req, res) => {
   const { title, id, category } = req.body;
+  const date = new Date();
   const addRecord = new RecordSchema({
     title,
     id,
     category,
+    date,
   });
   const result = await addRecord
     .save()
     .then(() => {
-      console.log("Success");
       res.send("success");
     })
     .catch((err) => {
       console.error(err);
       res.send("fail");
     });
+});
+
+recordRouter.delete("/deleteAll", async (req, res) => {
+  try {
+    await RecordSchema.deleteMany({});
+    res.send("success");
+  } catch (e) {
+    res.send("fail");
+  }
 });
 
 export default recordRouter;
