@@ -8,8 +8,12 @@ routineRouter.use((req, res, next) => {
 });
 
 routineRouter.get("/", async (req, res) => {
-  const routine = await RoutineSchema.find({});
-  res.send(routine);
+  try {
+    const routine = await RoutineSchema.find({});
+    res.send(routine);
+  } catch (e) {
+    res.status(400).send(e);
+  }
 });
 
 routineRouter.get("/:id", async (req, res) => {
@@ -18,8 +22,7 @@ routineRouter.get("/:id", async (req, res) => {
     const routine = await RoutineSchema.findOne({ id });
     res.send(routine);
   } catch (e) {
-    console.error(e);
-    res.send("fail");
+    res.status(400).send(e);
   }
 });
 
@@ -29,8 +32,7 @@ routineRouter.get("/category/:category", async (req, res) => {
     const routine = await RoutineSchema.find({ category });
     res.send(routine);
   } catch (e) {
-    console.error(e);
-    res.send("fail");
+    res.status(400).send(e);
   }
 });
 
@@ -40,7 +42,7 @@ routineRouter.get("/count/:count", async (req, res) => {
     const routine = await RoutineSchema.find({}).limit(count);
     res.send(routine);
   } catch (e) {
-    res.send("fail");
+    res.status(400).send(e);
   }
 });
 
@@ -54,15 +56,13 @@ routineRouter.post("/addRoutine", async (req, res) => {
     date,
     routine: [...routine],
   });
-  const result = await addRoutine
+  await addRoutine
     .save()
     .then(() => {
-      console.log("Success");
       res.send("success");
     })
     .catch((err) => {
-      console.error(err);
-      res.send("fail");
+      res.status(400).send(err);
     });
 });
 
@@ -72,7 +72,7 @@ routineRouter.put("/updateRoutine", async (req, res) => {
     await RoutineSchema.updateOne({ id: id }, { title, category, routine });
     res.send("success");
   } catch (e) {
-    res.send("fail");
+    res.status(400).send(e);
   }
 });
 
@@ -82,18 +82,17 @@ routineRouter.delete("/delete", async (req, res) => {
     await RoutineSchema.deleteOne({ id });
     res.send("success");
   } catch (e) {
-    res.send("fail");
+    res.status(400).send(e);
   }
 });
 
 routineRouter.delete("/deleteRoutineByCategory", async (req, res) => {
   const { category } = req.body;
-  console.log(category);
   try {
     await RoutineSchema.deleteMany({ category });
     res.send("success");
   } catch (e) {
-    res.send("fail");
+    res.status(400).send(e);
   }
 });
 

@@ -9,7 +9,11 @@ recordRouter.use((req, res, next) => {
 
 recordRouter.get("/", async (req, res) => {
   const routine = await RecordSchema.find({});
-  res.send(routine);
+  try {
+    res.send(routine);
+  } catch (e) {
+    res.status(400).send(e);
+  }
 });
 
 recordRouter.get("/count/:count", async (req, res) => {
@@ -18,7 +22,7 @@ recordRouter.get("/count/:count", async (req, res) => {
     const routine = await RecordSchema.find({}).sort({ _id: -1 }).limit(count);
     res.send(routine);
   } catch (e) {
-    res.send("fail");
+    res.status(400).send(e);
   }
 });
 
@@ -31,14 +35,13 @@ recordRouter.post("/addRecord", async (req, res) => {
     category,
     date,
   });
-  const result = await addRecord
+  await addRecord
     .save()
     .then(() => {
       res.send("success");
     })
     .catch((err) => {
-      console.error(err);
-      res.send("fail");
+      res.status(400).send(err);
     });
 });
 
@@ -47,7 +50,7 @@ recordRouter.delete("/deleteAll", async (req, res) => {
     await RecordSchema.deleteMany({});
     res.send("success");
   } catch (e) {
-    res.send("fail");
+    res.status(400).send(e);
   }
 });
 
