@@ -26,7 +26,7 @@ app.use(bodyParser.json());
 
 // mongoose connect
 mongoose
-  .connect("mongodb://127.0.0.1:27017")
+  .connect("mongodb://0.0.0.0:27017")
   .then(() => console.log("DB 연결 성공"))
   .catch((e) => console.log(e));
 
