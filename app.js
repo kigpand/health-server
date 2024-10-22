@@ -14,7 +14,8 @@ const app = express();
 // CORS 설정 - 모두 개방
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://clonestargram.vercel.app"],
+    // origin: ["http://localhost:5173"],
+    origin: true,
     credentials: true,
   })
 );
@@ -33,6 +34,10 @@ mongoose
 app.use("/routine", routineRouter);
 app.use("/category", categoryRouter);
 app.use("/record", recordRouter);
+
+app.get("/test", (req, res) => {
+  res.send("테스트입니다");
+});
 
 app.listen(3010, () => {
   console.log("Server is running");
