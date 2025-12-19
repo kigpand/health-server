@@ -8,7 +8,16 @@ routineRouter.use((req, res, next) => {
 });
 
 routineRouter.get("/", async (req, res) => {
+  const { category: categoryId } = req.query;
   try {
+    if (categoryId) {
+      const routines = await RoutineSchema.find({ category: categoryId });
+      return res.send({
+        categoryId,
+        routines,
+        count: routines.length,
+      });
+    }
     const routine = await RoutineSchema.find({});
     res.send(routine);
   } catch (e) {
@@ -20,16 +29,6 @@ routineRouter.get("/:id", async (req, res) => {
   const id = req.params.id;
   try {
     const routine = await RoutineSchema.findOne({ id });
-    res.send(routine);
-  } catch (e) {
-    res.status(400).send(e);
-  }
-});
-
-routineRouter.get("/category/:category", async (req, res) => {
-  const category = req.params.category;
-  try {
-    const routine = await RoutineSchema.find({ category });
     res.send(routine);
   } catch (e) {
     res.status(400).send(e);
