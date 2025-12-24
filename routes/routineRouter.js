@@ -8,14 +8,12 @@ routineRouter.use((req, res, next) => {
 });
 
 routineRouter.get("/", async (req, res) => {
-  const { category: categoryId } = req.query;
+  const { category } = req.query;
   try {
-    if (categoryId) {
-      const routines = await RoutineSchema.find({ category: categoryId });
+    if (category) {
+      const routines = await RoutineSchema.find({ category });
       return res.send({
-        categoryId,
         routines,
-        count: routines.length,
       });
     }
     const routine = await RoutineSchema.find({});
