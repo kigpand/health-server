@@ -8,8 +8,21 @@ recordRouter.use((req, res, next) => {
 });
 
 recordRouter.get("/", async (req, res) => {
-  const routine = await RecordSchema.find({});
+  const { days } = req.query;
+  const allowedDayRanges = [3, 7, 10, 30];
   try {
+    const filter = {};
+    if (days) {
+      const daysNumber = Number(days);
+      if (!allowedDayRanges.includes(daysNumber)) {
+        return res.status(400).send(`날짜 값이 잘못되었습니다`);
+      }
+      const startDate = new Date();
+      startDate.setHours(0, 0, 0, 0);
+      startDate.setDate(startDate.getDate() - daysNumber);
+      filter.date = { $gte: startDate };
+    }
+    const routine = await RecordSchema.find(filter);
     res.send(routine);
   } catch (e) {
     res.status(400).send(e);
