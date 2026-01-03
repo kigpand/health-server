@@ -22,7 +22,7 @@ recordRouter.get("/", async (req, res) => {
       startDate.setDate(startDate.getDate() - daysNumber);
       filter.date = { $gte: startDate };
     }
-    const routine = await RecordSchema.find(filter);
+    const routine = await RecordSchema.find(filter).sort({ date: -1 });
     res.send(routine);
   } catch (e) {
     res.status(400).send(e);
@@ -62,6 +62,24 @@ recordRouter.delete("/deleteAll", async (req, res) => {
   try {
     await RecordSchema.deleteMany({});
     res.send("success");
+  } catch (e) {
+    res.status(400).send(e);
+  }
+});
+
+recordRouter.post("/reset", async (req, res) => {
+  const { records = [] } = req.body;
+  try {
+    await RecordSchema.deleteMany({});
+    if (records.length) {
+      await RecordSchema.insertMany(
+        records.map((record) => ({
+          ...record,
+          date: record.date ? new Date(record.date) : new Date(),
+        }))
+      );
+    }
+    res.send("reset success");
   } catch (e) {
     res.status(400).send(e);
   }
