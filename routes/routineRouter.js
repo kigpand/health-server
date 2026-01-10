@@ -44,23 +44,23 @@ routineRouter.get("/count/:count", async (req, res) => {
 });
 
 routineRouter.post("/addRoutine", async (req, res) => {
-  const { id, title, category, routine } = req.body;
-  const date = new Date();
-  const addRoutine = new RoutineSchema({
-    id,
-    title,
-    category,
-    date,
-    routine: [...routine],
-  });
-  await addRoutine
-    .save()
-    .then(() => {
-      res.send("success");
-    })
-    .catch((err) => {
-      res.status(400).send(err);
+  const { title, category, routine = [] } = req.body;
+  try {
+    const lastRoutine = await RoutineSchema.findOne({}).sort({ id: -1 });
+    const nextId = lastRoutine ? lastRoutine.id + 1 : 1;
+    const date = new Date();
+    const addRoutine = new RoutineSchema({
+      id: nextId,
+      title,
+      category,
+      date,
+      routine: [...routine],
     });
+    await addRoutine.save();
+    res.send({ message: "success", id: nextId });
+  } catch (err) {
+    res.status(400).send(err);
+  }
 });
 
 routineRouter.put("/updateRoutine", async (req, res) => {
